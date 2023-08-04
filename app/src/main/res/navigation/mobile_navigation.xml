@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.thedogapp.ui.HomeFragment"
+        android:name="com.example.thedogapp.presentationlayer.ui.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_search"
-        android:name="com.example.thedogapp.ui.SearchFragment"
+        android:name="com.example.thedogapp.presentationlayer.ui.SearchFragment"
         android:label="@string/title_search"
         tools:layout="@layout/fragment_search" />
 
     <fragment
         android:id="@+id/navigation_details"
-        android:name="com.example.thedogapp.ui.DetailsFragment"
+        android:name="com.example.thedogapp.presentationlayer.ui.DetailsFragment"
         android:label="@string/title_details"
         tools:layout="@layout/fragment_details" />
 </navigation>

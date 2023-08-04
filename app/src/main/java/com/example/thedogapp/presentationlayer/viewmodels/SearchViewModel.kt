@@ -1,4 +1,4 @@
-package com.example.thedogapp.ui
+package com.example.thedogapp.presentationlayer.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

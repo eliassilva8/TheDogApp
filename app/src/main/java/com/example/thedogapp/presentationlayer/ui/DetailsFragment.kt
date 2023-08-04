@@ -1,4 +1,4 @@
-package com.example.thedogapp.ui
+package com.example.thedogapp.presentationlayer.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.thedogapp.databinding.FragmentDetailsBinding
+import com.example.thedogapp.presentationlayer.viewmodels.DetailsViewModel
 
 class DetailsFragment : Fragment() {
 
