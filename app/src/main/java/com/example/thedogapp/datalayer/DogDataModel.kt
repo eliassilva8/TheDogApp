@@ -1,5 +1,6 @@
 package com.example.thedogapp.datalayer
 
+import com.example.thedogapp.presentationlayer.ui.DogUiModel
 import com.google.gson.annotations.SerializedName
 
 data class DogDataModel(
@@ -23,4 +24,10 @@ data class DogDataModel(
     )
 }
 
-
+fun DogDataModel.toDogUiModel(): DogUiModel {
+    return DogUiModel(
+        id = id,
+        imageUrl = url,
+        name = id
+    )
+}

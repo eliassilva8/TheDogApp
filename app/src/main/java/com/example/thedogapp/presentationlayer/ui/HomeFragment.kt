@@ -6,9 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thedogapp.databinding.FragmentHomeBinding
 import com.example.thedogapp.presentationlayer.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
@@ -26,9 +33,28 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        viewModel.fetchDogs()
+        val dogListAdapter = DogListAdapter()
+        bindAdapter(dogListAdapter)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.items.collectLatest {
+                       dogListAdapter.submitData(it)
+                    }
+                }
+            }
+        }
 
         return root
+    }
+
+    private fun bindAdapter(dogListAdapter: DogListAdapter) {
+        with(binding.dogsRecyclerView) {
+            adapter = dogListAdapter
+            layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+        }
     }
 
     override fun onDestroyView() {
