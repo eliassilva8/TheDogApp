@@ -22,7 +22,7 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
 
     val items: Flow<PagingData<DogUiModel>> = Pager(
-        config = PagingConfig(pageSize = ITEM_PER_PAGE),
+        config = PagingConfig(pageSize = ITEM_PER_PAGE, enablePlaceholders = false),
         pagingSourceFactory = {
             theDogApiRepository.getDogs()
         }

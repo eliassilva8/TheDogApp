@@ -9,6 +9,7 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.example.thedogapp.R
 
 class DogListAdapter() : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHolder>(DOG_DIFF_CALLBACK) {
@@ -23,8 +24,11 @@ class DogListAdapter() : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHol
         val dog = getItem(position)
 
         if (dog != null) {
-            holder.imageViewDog.load(dog.imageUrl)
-            holder.textViewDogName.text = dog.name
+            holder.imageViewDog.load(dog.imageUrl) {
+                transformations(RoundedCornersTransformation(25F))
+            }
+            //TODO change to name
+            holder.textViewDogName.text = dog.id
         }
     }
 

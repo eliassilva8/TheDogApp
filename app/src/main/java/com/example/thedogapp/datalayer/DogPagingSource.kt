@@ -3,6 +3,7 @@ package com.example.thedogapp.datalayer
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.thedogapp.BuildConfig
+import retrofit2.await
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class DogPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 1
             val pageSize = params.loadSize
-            val response = theDogApi.getDogs("10").awaitResponse()
+            val response = theDogApi.getDogs("10", "true").awaitResponse()
 
             if (response.isSuccessful) {
                 LoadResult.Page(
