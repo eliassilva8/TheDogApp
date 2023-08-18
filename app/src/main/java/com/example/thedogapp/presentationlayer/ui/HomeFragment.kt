@@ -10,6 +10,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thedogapp.databinding.FragmentHomeBinding
 import com.example.thedogapp.presentationlayer.viewmodels.HomeViewModel
@@ -43,6 +44,16 @@ class HomeFragment : Fragment() {
                        dogListAdapter.submitData(it)
                     }
                 }
+            }
+        }
+
+        binding.changeViewButton.setOnCheckedChangeListener { _, isChecked ->
+            dogListAdapter.setListViewMode(!isChecked)
+
+            if (isChecked) {
+                binding.dogsRecyclerView.layoutManager = GridLayoutManager(context, 2)
+            } else {
+                binding.dogsRecyclerView.layoutManager = LinearLayoutManager(context)
             }
         }
 

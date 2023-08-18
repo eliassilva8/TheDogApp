@@ -6,6 +6,12 @@
     android:orientation="vertical"
     tools:context=".presentationlayer.ui.HomeFragment">
 
+    <CheckBox
+        android:id="@+id/changeViewButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/outline_grid_view_24"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dogsRecyclerView"
         android:layout_height="match_parent"
