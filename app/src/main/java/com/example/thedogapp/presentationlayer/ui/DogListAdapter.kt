@@ -14,7 +14,7 @@ import com.example.thedogapp.R.id
 import com.example.thedogapp.R.layout
 
 
-class DogListAdapter() : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHolder>(DOG_DIFF_CALLBACK) {
+class DogListAdapter(private val itemClickListener: ItemClickListener) : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHolder>(DOG_DIFF_CALLBACK) {
     private var isListView: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
@@ -33,6 +33,9 @@ class DogListAdapter() : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHol
             }
             //TODO change to name
             holder.textViewDogName.text = dog.name
+            holder.imageViewDog.setOnClickListener {
+                itemClickListener.onClick(dog)
+            }
         }
     }
 
@@ -48,6 +51,10 @@ class DogListAdapter() : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHol
     class DogViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageViewDog: ImageView = itemView.findViewById(id.dogImage)
         val textViewDogName: TextView = itemView.findViewById(id.dogName)
+    }
+
+    interface ItemClickListener {
+        fun onClick(item: DogUiModel)
     }
 
 

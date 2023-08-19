@@ -3,4 +3,8 @@
     <string name="title_home">Home</string>
     <string name="title_search">Search</string>
     <string name="title_details">Details</string>
+    <string name="name">Name:</string>
+    <string name="group">Group:</string>
+    <string name="origin">Origin:</string>
+    <string name="temperament">Temperament:</string>
 </resources>

@@ -9,9 +9,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.thedogapp.R
 import com.example.thedogapp.databinding.FragmentHomeBinding
 import com.example.thedogapp.presentationlayer.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +21,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), DogListAdapter.ItemClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -34,7 +36,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val dogListAdapter = DogListAdapter()
+        val dogListAdapter = DogListAdapter(this)
         bindAdapter(dogListAdapter)
 
         handleUnsortedList(dogListAdapter)
@@ -94,5 +96,10 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onClick(item: DogUiModel) {
+        val action = HomeFragmentDirections.actionNavigationHomeToNavigationDetails(item)
+        findNavController().navigate(action)
     }
 }
