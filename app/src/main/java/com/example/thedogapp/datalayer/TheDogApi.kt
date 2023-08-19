@@ -13,4 +13,13 @@ interface TheDogApi {
         @Query("limit") limit: String,
         @Query("has_breeds") hasBreeds: String
     ): Call<List<DogDataModel>>
+
+    @GET("search")
+    fun getDogsSorted(
+        @Header("x-api-key") key: String,
+        @Query("limit") limit: String,
+        @Query("page") page: String,
+        @Query("has_breeds") hasBreeds: String,
+        @Query("order") order: String
+    ): Call<List<DogDataModel>>
 }

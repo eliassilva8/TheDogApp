@@ -1,5 +1,6 @@
 package com.example.thedogapp.datalayer
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.thedogapp.BuildConfig
@@ -7,7 +8,7 @@ import retrofit2.await
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
-class DogPagingSource @Inject constructor(
+class DogSortedPagingSource @Inject constructor(
     private val theDogApi: TheDogApi
 ): PagingSource<Int, DogDataModel>() {
 
@@ -21,7 +22,7 @@ class DogPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DogDataModel> {
         return try {
             val page = params.key ?: 0
-            val response = theDogApi.getDogs("25", "true").awaitResponse()
+            val response = theDogApi.getDogsSorted(apiKey,"25", page.toString(), "true", "ASC").awaitResponse()
 
             if (response.isSuccessful) {
                 val nextPage = if (!response.body().isNullOrEmpty()) {
@@ -36,7 +37,7 @@ class DogPagingSource @Inject constructor(
                     nextKey = nextPage
                 )
             } else {
-                LoadResult.Error(ApiResponseFailedException("Error searching for dogs"))
+                LoadResult.Error(ApiResponseFailedException("Error searching for dogs sorted"))
             }
 
         } catch (e: Exception) {

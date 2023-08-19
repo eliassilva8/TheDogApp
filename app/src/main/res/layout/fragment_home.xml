@@ -6,11 +6,24 @@
     android:orientation="vertical"
     tools:context=".presentationlayer.ui.HomeFragment">
 
-    <CheckBox
-        android:id="@+id/changeViewButton"
-        android:layout_width="wrap_content"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:button="@drawable/outline_grid_view_24"/>
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/changeViewButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/outline_grid_view_24"/>
+
+        <CheckBox
+            android:id="@+id/sort_list_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@drawable/outline_sort_by_alpha_24"/>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dogsRecyclerView"

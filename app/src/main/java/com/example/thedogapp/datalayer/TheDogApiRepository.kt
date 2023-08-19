@@ -6,4 +6,6 @@ class TheDogApiRepository @Inject constructor(
     private val theDogApi: TheDogApi
 ) {
     fun getDogs() = DogPagingSource(theDogApi)
+
+    fun getDogsSorted() = DogSortedPagingSource(theDogApi)
 }

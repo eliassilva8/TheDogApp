@@ -32,7 +32,7 @@ class DogListAdapter() : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHol
                 transformations(RoundedCornersTransformation(25F))
             }
             //TODO change to name
-            holder.textViewDogName.text = dog.id
+            holder.textViewDogName.text = dog.name
         }
     }
 

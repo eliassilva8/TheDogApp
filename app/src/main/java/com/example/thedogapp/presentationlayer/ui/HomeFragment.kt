@@ -37,15 +37,7 @@ class HomeFragment : Fragment() {
         val dogListAdapter = DogListAdapter()
         bindAdapter(dogListAdapter)
 
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.items.collectLatest {
-                       dogListAdapter.submitData(it)
-                    }
-                }
-            }
-        }
+        handleUnsortedList(dogListAdapter)
 
         binding.changeViewButton.setOnCheckedChangeListener { _, isChecked ->
             dogListAdapter.setListViewMode(!isChecked)
@@ -57,14 +49,45 @@ class HomeFragment : Fragment() {
             }
         }
 
+        binding.sortListButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                handleSortedList(dogListAdapter)
+            } else {
+                handleUnsortedList(dogListAdapter)
+            }
+        }
         return root
+    }
+
+    private fun handleSortedList(dogListAdapter: DogListAdapter) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.itemsSorted.collectLatest {
+                        dogListAdapter.submitData(it)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun handleUnsortedList(dogListAdapter: DogListAdapter) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.items.collectLatest {
+                        dogListAdapter.submitData(it)
+                    }
+                }
+            }
+        }
     }
 
     private fun bindAdapter(dogListAdapter: DogListAdapter) {
         with(binding.dogsRecyclerView) {
             adapter = dogListAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
+            addItemDecoration(DividerItemDecoration(context, 0))
         }
     }
 

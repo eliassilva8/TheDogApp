@@ -15,16 +15,38 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val ITEM_PER_PAGE = 5
+private const val ITEM_PER_PAGE = 25
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val theDogApiRepository: TheDogApiRepository
 ) : ViewModel() {
 
     val items: Flow<PagingData<DogUiModel>> = Pager(
-        config = PagingConfig(pageSize = ITEM_PER_PAGE, enablePlaceholders = false),
+        config = PagingConfig(
+            pageSize = ITEM_PER_PAGE,
+            enablePlaceholders = false,
+            initialLoadSize = ITEM_PER_PAGE
+        ),
         pagingSourceFactory = {
             theDogApiRepository.getDogs()
+        }
+    )
+        .flow
+        .map { pagingData ->
+            pagingData.map { dogData ->
+                dogData.toDogUiModel()
+            }
+        }
+        .cachedIn(viewModelScope)
+
+    val itemsSorted: Flow<PagingData<DogUiModel>> = Pager(
+        config = PagingConfig(
+            pageSize = ITEM_PER_PAGE,
+            enablePlaceholders = false,
+            initialLoadSize = ITEM_PER_PAGE
+        ),
+        pagingSourceFactory = {
+            theDogApiRepository.getDogsSorted()
         }
     )
         .flow
