@@ -31,7 +31,6 @@ class DogListAdapter(private val itemClickListener: ItemClickListener) : PagingD
             holder.imageViewDog.load(dog.imageUrl) {
                 transformations(RoundedCornersTransformation(25F))
             }
-            //TODO change to name
             holder.textViewDogName.text = dog.name
             holder.imageViewDog.setOnClickListener {
                 itemClickListener.onClick(dog)
@@ -52,11 +51,6 @@ class DogListAdapter(private val itemClickListener: ItemClickListener) : PagingD
         val imageViewDog: ImageView = itemView.findViewById(id.dogImage)
         val textViewDogName: TextView = itemView.findViewById(id.dogName)
     }
-
-    interface ItemClickListener {
-        fun onClick(item: DogUiModel)
-    }
-
 
     companion object {
         private const val VIEW_TYPE_LIST = 1

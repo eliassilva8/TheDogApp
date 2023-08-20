@@ -6,8 +6,9 @@ import com.example.thedogapp.BuildConfig
 import retrofit2.awaitResponse
 import javax.inject.Inject
 
-class DogPagingSource @Inject constructor(
-    private val theDogApi: TheDogApi
+class DogSearchPagingSource @Inject constructor(
+    private val theDogApi: TheDogApi,
+    private val query: String?
 ): PagingSource<Int, DogDataModel>() {
 
     private val apiKey = BuildConfig.THE_DOG_API_KEY
@@ -21,18 +22,28 @@ class DogPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 0
             val loadSize = params.loadSize
-            val response = theDogApi.getDogs( loadSize.toString(), page.toString(), "true").awaitResponse()
+            val response = theDogApi.searchDogs(query!!).awaitResponse()
 
             if (response.isSuccessful) {
-                val hasMoreItems = response.body()!!.size == loadSize
+                val items = response.body()!!
+                val searchResult = mutableListOf<DogDataModel>()
+                val hasMoreItems = items.size == loadSize
                 val nextPage = if (hasMoreItems) {
                     page + 1
                 } else {
                     null
                 }
 
+                items.forEach {breed ->
+                    val dogData = theDogApi.getDogByImageId(breed.imageId).awaitResponse()
+
+                    if (response.isSuccessful) {
+                        searchResult.add(dogData.body()!!)
+                    }
+                }
+
                 LoadResult.Page(
-                    data = response.body()!!,
+                    data = searchResult,
                     prevKey = if (page == 0) null else page - 1,
                     nextKey = nextPage
                 )

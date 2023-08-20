@@ -4,13 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import coil.load
 import com.example.thedogapp.databinding.FragmentDetailsBinding
-import com.example.thedogapp.presentationlayer.viewmodels.DetailsViewModel
 
 class DetailsFragment : Fragment() {
 
@@ -24,9 +21,6 @@ class DetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val detailsViewModel =
-            ViewModelProvider(this).get(DetailsViewModel::class.java)
-
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 

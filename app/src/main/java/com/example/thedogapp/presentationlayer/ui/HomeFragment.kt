@@ -10,10 +10,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.thedogapp.R
 import com.example.thedogapp.databinding.FragmentHomeBinding
 import com.example.thedogapp.presentationlayer.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,12 +19,14 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), DogListAdapter.ItemClickListener {
+class HomeFragment : Fragment(), ItemClickListener {
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModels()
+
+    private lateinit var dogListAdapter: DogListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +36,10 @@ class HomeFragment : Fragment(), DogListAdapter.ItemClickListener {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val dogListAdapter = DogListAdapter(this)
-        bindAdapter(dogListAdapter)
+        dogListAdapter = DogListAdapter(this)
+        bindAdapter()
 
-        handleUnsortedList(dogListAdapter)
+        handleUnsortedList()
 
         binding.changeViewButton.setOnCheckedChangeListener { _, isChecked ->
             dogListAdapter.setListViewMode(!isChecked)
@@ -53,15 +53,15 @@ class HomeFragment : Fragment(), DogListAdapter.ItemClickListener {
 
         binding.sortListButton.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                handleSortedList(dogListAdapter)
+                handleSortedList()
             } else {
-                handleUnsortedList(dogListAdapter)
+                handleUnsortedList()
             }
         }
         return root
     }
 
-    private fun handleSortedList(dogListAdapter: DogListAdapter) {
+    private fun handleSortedList() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -73,7 +73,7 @@ class HomeFragment : Fragment(), DogListAdapter.ItemClickListener {
         }
     }
 
-    private fun handleUnsortedList(dogListAdapter: DogListAdapter) {
+    private fun handleUnsortedList() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
@@ -85,11 +85,10 @@ class HomeFragment : Fragment(), DogListAdapter.ItemClickListener {
         }
     }
 
-    private fun bindAdapter(dogListAdapter: DogListAdapter) {
+    private fun bindAdapter() {
         with(binding.dogsRecyclerView) {
             adapter = dogListAdapter
             layoutManager = LinearLayoutManager(context)
-            addItemDecoration(DividerItemDecoration(context, 0))
         }
     }
 

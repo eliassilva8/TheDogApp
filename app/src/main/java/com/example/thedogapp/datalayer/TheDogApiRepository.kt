@@ -8,4 +8,6 @@ class TheDogApiRepository @Inject constructor(
     fun getDogs() = DogPagingSource(theDogApi)
 
     fun getDogsSorted() = DogSortedPagingSource(theDogApi)
+
+    fun searchDogs(query: String?) = DogSearchPagingSource(theDogApi, query)
 }

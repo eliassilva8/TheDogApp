@@ -1,13 +1,42 @@
 package com.example.thedogapp.presentationlayer.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.map
+import com.example.thedogapp.datalayer.TheDogApiRepository
+import com.example.thedogapp.datalayer.toDogUiModel
+import com.example.thedogapp.presentationlayer.ui.DogUiModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class SearchViewModel : ViewModel() {
+private const val ITEM_PER_PAGE = 50
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is search Fragment"
-    }
-    val text: LiveData<String> = _text
+@HiltViewModel
+class SearchViewModel @Inject constructor(
+    private val theDogApiRepository: TheDogApiRepository
+): ViewModel() {
+
+    fun searchDogs(query: String?): Flow<PagingData<DogUiModel>> = Pager(
+        config = PagingConfig(
+            pageSize = ITEM_PER_PAGE,
+            enablePlaceholders = false,
+            initialLoadSize = ITEM_PER_PAGE
+        ),
+        pagingSourceFactory = {
+            theDogApiRepository.searchDogs(query)
+        }
+    )
+        .flow
+        .map { pagingData ->
+            pagingData.map { breed ->
+                breed.toDogUiModel()
+            }
+        }
+        .cachedIn(viewModelScope)
 }

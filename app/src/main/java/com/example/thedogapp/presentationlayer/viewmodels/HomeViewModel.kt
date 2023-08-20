@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val ITEM_PER_PAGE = 25
+private const val ITEM_PER_PAGE = 50
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val theDogApiRepository: TheDogApiRepository
