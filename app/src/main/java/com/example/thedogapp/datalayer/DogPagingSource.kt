@@ -8,23 +8,25 @@ import javax.inject.Inject
 
 class DogPagingSource @Inject constructor(
     private val theDogApi: TheDogApi
-): PagingSource<Int, DogDataModel>() {
+) : PagingSource<Int, DogDataModel>() {
 
     private val apiKey = BuildConfig.THE_DOG_API_KEY
 
     override fun getRefreshKey(state: PagingState<Int, DogDataModel>): Int? {
         val anchorPosition = state.anchorPosition ?: return null
-        return  anchorPosition - state.config.pageSize / 2
+        return anchorPosition - state.config.pageSize / 2
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, DogDataModel> {
         return try {
             val page = params.key ?: 0
             val loadSize = params.loadSize
-            val response = theDogApi.getDogs( loadSize.toString(), page.toString(), "true").awaitResponse()
+            val response = theDogApi.getDogs(apiKey, loadSize.toString(), page.toString(), "true")
 
-            if (response.isSuccessful) {
-                val hasMoreItems = response.body()!!.size == loadSize
+            if (response.isEmpty()) {
+                LoadResult.Error(ApiEmptyResponseException("No dogs found"))
+            } else {
+                val hasMoreItems = response.size == loadSize
                 val nextPage = if (hasMoreItems) {
                     page + 1
                 } else {
@@ -32,16 +34,14 @@ class DogPagingSource @Inject constructor(
                 }
 
                 LoadResult.Page(
-                    data = response.body()!!,
+                    data = response,
                     prevKey = if (page == 0) null else page - 1,
                     nextKey = nextPage
                 )
-            } else {
-                LoadResult.Error(ApiResponseFailedException("Error searching for dogs"))
             }
 
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            LoadResult.Error(ApiResponseFailedException("Error getting dogs"))
         }
     }
 }

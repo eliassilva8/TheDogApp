@@ -22,24 +22,22 @@ class DogSearchPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 0
             val loadSize = params.loadSize
-            val response = theDogApi.searchDogs(query!!).awaitResponse()
+            val response = theDogApi.searchDogs(apiKey, query!!)
 
-            if (response.isSuccessful) {
-                val items = response.body()!!
+            if (response.isEmpty()) {
+                LoadResult.Error(ApiEmptyResponseException("No dogs found"))
+            } else {
                 val searchResult = mutableListOf<DogDataModel>()
-                val hasMoreItems = items.size == loadSize
+                val hasMoreItems = response.size == loadSize
                 val nextPage = if (hasMoreItems) {
                     page + 1
                 } else {
                     null
                 }
 
-                items.forEach {breed ->
-                    val dogData = theDogApi.getDogByImageId(breed.imageId).awaitResponse()
-
-                    if (response.isSuccessful) {
-                        searchResult.add(dogData.body()!!)
-                    }
+                response.forEach {breed ->
+                    val dogData = theDogApi.getDogByImageId(breed.imageId)
+                    searchResult.add(dogData)
                 }
 
                 LoadResult.Page(
@@ -47,12 +45,9 @@ class DogSearchPagingSource @Inject constructor(
                     prevKey = if (page == 0) null else page - 1,
                     nextKey = nextPage
                 )
-            } else {
-                LoadResult.Error(ApiResponseFailedException("Error searching for dogs"))
             }
-
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            LoadResult.Error(ApiResponseFailedException("Error getting dogs"))
         }
     }
 }

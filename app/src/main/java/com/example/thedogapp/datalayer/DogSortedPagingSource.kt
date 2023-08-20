@@ -1,5 +1,6 @@
 package com.example.thedogapp.datalayer
 
+import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.thedogapp.BuildConfig
@@ -21,27 +22,28 @@ class DogSortedPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 0
             val loadSize = params.loadSize
-            val response = theDogApi.getDogsSorted(loadSize.toString(), page.toString(), "true", "ASC").awaitResponse()
+            val response = theDogApi.getDogsSorted(apiKey, loadSize.toString(), page.toString(), "true", "ASC")
 
-            if (response.isSuccessful) {
-                val hasMoreItems = response.body()!!.size == loadSize
+            if (response.isEmpty()) {
+                LoadResult.Error(ApiEmptyResponseException("No dogs found"))
+            } else {
+                val hasMoreItems = response.size == loadSize
                 val nextPage = if (hasMoreItems) {
                     page + 1
                 } else {
                     null
                 }
 
+                Log.d("Elias", "loadSize: $loadSize, page: $page, responseSize: ${response.size}")
+
                 LoadResult.Page(
-                    data = response.body()!!,
+                    data = response,
                     prevKey = if (page == 0) null else page - 1,
                     nextKey = nextPage
                 )
-            } else {
-                LoadResult.Error(ApiResponseFailedException("Error searching for dogs sorted"))
             }
-
         } catch (e: Exception) {
-            LoadResult.Error(e)
+            LoadResult.Error(ApiResponseFailedException("Error getting dogs"))
         }
     }
 }
