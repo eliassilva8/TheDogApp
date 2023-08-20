@@ -1,32 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="8dp"
     tools:context=".presentationlayer.ui.HomeFragment">
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
+    <CheckBox
+        android:id="@+id/changeViewButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:button="@drawable/outline_grid_view_24"
+        app:layout_constraintStart_toEndOf="@+id/sort_list_button"
+        app:layout_constraintTop_toTopOf="@+id/sort_list_button" />
 
-        <CheckBox
-            android:id="@+id/changeViewButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/outline_grid_view_24"/>
-
-        <CheckBox
-            android:id="@+id/sort_list_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@drawable/outline_sort_by_alpha_24"/>
-    </androidx.appcompat.widget.LinearLayoutCompat>
-
+    <CheckBox
+        android:id="@+id/sort_list_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/outline_sort_by_alpha_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/dogsRecyclerView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent" />
-</androidx.appcompat.widget.LinearLayoutCompat>
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="?android:attr/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeViewButton" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

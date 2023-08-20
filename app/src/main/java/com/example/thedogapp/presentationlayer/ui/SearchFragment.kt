@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thedogapp.R
 import com.example.thedogapp.databinding.FragmentSearchBinding
@@ -39,8 +41,7 @@ class SearchFragment : Fragment(), ItemClickListener {
         val root: View = binding.root
 
         dogSearchAdapter = DogSearchAdapter(this)
-        binding.dogsRecyclerView.adapter = dogSearchAdapter
-        binding.dogsRecyclerView.layoutManager = LinearLayoutManager(context)
+        bindAdapter()
 
         binding.searchView.queryHint = getString(R.string.search_for_dog_breed)
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
@@ -59,6 +60,15 @@ class SearchFragment : Fragment(), ItemClickListener {
         return root
     }
 
+    private fun bindAdapter() {
+        with(binding.dogsRecyclerView) {
+            binding.dogsRecyclerView.adapter = dogSearchAdapter.apply {
+                handleLoadState(this)
+            }
+            binding.dogsRecyclerView.layoutManager = LinearLayoutManager(context)
+        }
+    }
+
     private fun handleSearchDogs(query: String?) {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -67,6 +77,16 @@ class SearchFragment : Fragment(), ItemClickListener {
                         Log.d("Elias", "collect: $query")
                         dogSearchAdapter.submitData(it)
                     }
+                }
+            }
+        }
+    }
+
+    private fun handleLoadState(adapter: DogSearchAdapter) {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                adapter.loadStateFlow.collectLatest { loadState ->
+                    binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
                 }
             }
         }
