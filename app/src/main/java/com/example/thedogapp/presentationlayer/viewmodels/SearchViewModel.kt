@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val ITEM_PER_PAGE = 50
+private const val ITEM_PER_PAGE = 7
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(

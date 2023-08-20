@@ -45,6 +45,7 @@ class HomeFragment : Fragment(), ItemClickListener {
 
         binding.changeViewButton.setOnCheckedChangeListener { _, isChecked ->
             dogListAdapter.setListViewMode(!isChecked)
+            viewModel.isListView = !isChecked
 
             if (isChecked) {
                 binding.dogsRecyclerView.layoutManager = GridLayoutManager(context, 2)
@@ -67,7 +68,7 @@ class HomeFragment : Fragment(), ItemClickListener {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.itemsSorted.collectLatest {
+                    viewModel.getDogsSorted().collectLatest {
                         dogListAdapter.submitData(it)
                     }
                 }
@@ -79,7 +80,7 @@ class HomeFragment : Fragment(), ItemClickListener {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
-                    viewModel.items.collectLatest {
+                    viewModel.getDogs().collectLatest {
                         dogListAdapter.submitData(it)
                     }
                 }

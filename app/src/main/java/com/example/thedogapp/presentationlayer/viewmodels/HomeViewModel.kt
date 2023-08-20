@@ -15,17 +15,19 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-private const val ITEM_PER_PAGE = 50
+private const val LIST_VIEW_LOAD_SIZE = 5
+private const val GRID_VIEW_LOAD_SIZE = 12
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val theDogApiRepository: TheDogApiRepository
 ) : ViewModel() {
 
-    val items: Flow<PagingData<DogUiModel>> = Pager(
+    var isListView = true
+    fun getDogs(): Flow<PagingData<DogUiModel>> = Pager(
         config = PagingConfig(
-            pageSize = ITEM_PER_PAGE,
+            pageSize = loadSize(),
             enablePlaceholders = false,
-            initialLoadSize = ITEM_PER_PAGE
+            initialLoadSize = loadSize()
         ),
         pagingSourceFactory = {
             theDogApiRepository.getDogs()
@@ -39,11 +41,11 @@ class HomeViewModel @Inject constructor(
         }
         .cachedIn(viewModelScope)
 
-    val itemsSorted: Flow<PagingData<DogUiModel>> = Pager(
+    fun getDogsSorted(): Flow<PagingData<DogUiModel>> = Pager(
         config = PagingConfig(
-            pageSize = ITEM_PER_PAGE,
+            pageSize = loadSize(),
             enablePlaceholders = false,
-            initialLoadSize = ITEM_PER_PAGE
+            initialLoadSize = loadSize()
         ),
         pagingSourceFactory = {
             theDogApiRepository.getDogsSorted()
@@ -56,4 +58,8 @@ class HomeViewModel @Inject constructor(
             }
         }
         .cachedIn(viewModelScope)
+
+    private fun loadSize() : Int {
+        return if (isListView) LIST_VIEW_LOAD_SIZE else GRID_VIEW_LOAD_SIZE
+    }
 }
