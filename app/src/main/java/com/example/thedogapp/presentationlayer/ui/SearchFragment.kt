@@ -1,12 +1,11 @@
 package com.example.thedogapp.presentationlayer.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -17,6 +16,7 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thedogapp.R
 import com.example.thedogapp.databinding.FragmentSearchBinding
+import com.example.thedogapp.datalayer.ApiEmptyResponseException
 import com.example.thedogapp.presentationlayer.viewmodels.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -43,7 +43,6 @@ class SearchFragment : Fragment(), ItemClickListener {
         dogSearchAdapter = DogSearchAdapter(this)
         bindAdapter()
 
-        binding.searchView.queryHint = getString(R.string.search_for_dog_breed)
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener,
             androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -74,7 +73,6 @@ class SearchFragment : Fragment(), ItemClickListener {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 launch {
                     searchViewModel.searchDogs(query).collectLatest {
-                        Log.d("Elias", "collect: $query")
                         dogSearchAdapter.submitData(it)
                     }
                 }
@@ -86,7 +84,28 @@ class SearchFragment : Fragment(), ItemClickListener {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 adapter.loadStateFlow.collectLatest { loadState ->
-                    binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
+                    when (loadState.refresh) {
+                        is LoadState.Loading -> {
+                            binding.progressBar.visibility = View.VISIBLE
+                            binding.noDogs.visibility = View.GONE
+                        }
+                        is LoadState.Error -> {
+                            val error = (loadState.refresh as LoadState.Error).error
+                            if (error is ApiEmptyResponseException) {
+                                binding.noDogs.visibility = View.VISIBLE
+                            } else {
+                                Toast.makeText(requireContext(), getString(R.string.something_went_wrong_please_try_again_later), Toast.LENGTH_SHORT)
+                                    .show()
+                            }
+                            binding.progressBar.visibility = View.GONE
+                            binding.dogsRecyclerView.visibility = View.GONE
+                        }
+                        else -> {
+                            binding.noDogs.visibility = View.GONE
+                            binding.progressBar.visibility = View.GONE
+                            binding.dogsRecyclerView.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         }

@@ -8,4 +8,6 @@
     <string name="origin">Origin:</string>
     <string name="temperament">Temperament:</string>
     <string name="search_for_dog_breed">Search for dog breed</string>
+    <string name="no_dogs_found">No dogs found</string>
+    <string name="something_went_wrong_please_try_again_later">Something went wrong! Please try again later.</string>
 </resources>

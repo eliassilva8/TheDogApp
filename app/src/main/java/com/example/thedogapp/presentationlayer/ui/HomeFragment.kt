@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -14,6 +14,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.thedogapp.R
 import com.example.thedogapp.databinding.FragmentHomeBinding
 import com.example.thedogapp.presentationlayer.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -101,7 +102,23 @@ class HomeFragment : Fragment(), ItemClickListener {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 adapter.loadStateFlow.collectLatest { loadState ->
-                    binding.progressBar.isVisible = loadState.refresh is LoadState.Loading
+                    when (loadState.refresh) {
+                        is LoadState.Loading -> binding.progressBar.visibility = View.VISIBLE
+                        is LoadState.Error -> {
+                            binding.progressBar.visibility = View.GONE
+                            binding.dogsRecyclerView.visibility = View.GONE
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.something_went_wrong_please_try_again_later),
+                                Toast.LENGTH_SHORT
+                            )
+                                .show()
+                        }
+                        else -> {
+                            binding.dogsRecyclerView.visibility = View.VISIBLE
+                            binding.progressBar.visibility = View.GONE
+                        }
+                    }
                 }
             }
         }
