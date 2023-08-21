@@ -1,4 +1,4 @@
-package com.example.thedogapp.presentationlayer.ui
+package com.example.thedogapp.presentationlayer.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.thedogapp.databinding.ItemDogSearchBinding
+import com.example.thedogapp.presentationlayer.models.DogUiModel
 
-class DogSearchAdapter(private val itemClickListener: ItemClickListener) : PagingDataAdapter<DogUiModel, DogSearchAdapter.DogViewHolder>(DOG_DIFF_CALLBACK) {
+class DogSearchAdapter(private val itemClickListener: ItemClickListener) : PagingDataAdapter<DogUiModel, DogSearchAdapter.DogViewHolder>(
+    DOG_DIFF_CALLBACK
+) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {
         val binding = ItemDogSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return DogViewHolder(binding)

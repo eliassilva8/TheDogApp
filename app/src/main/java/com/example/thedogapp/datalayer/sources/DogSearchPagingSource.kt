@@ -1,14 +1,15 @@
-package com.example.thedogapp.datalayer
+package com.example.thedogapp.datalayer.sources
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.thedogapp.BuildConfig
-import retrofit2.awaitResponse
+import com.example.thedogapp.datalayer.models.DogDataModel
+import com.example.thedogapp.datalayer.api.TheDogApi
 import javax.inject.Inject
 
-class DogSortedPagingSource @Inject constructor(
-    private val theDogApi: TheDogApi
+class DogSearchPagingSource @Inject constructor(
+    private val theDogApi: TheDogApi,
+    private val query: String?
 ): PagingSource<Int, DogDataModel>() {
 
     private val apiKey = BuildConfig.THE_DOG_API_KEY
@@ -22,11 +23,12 @@ class DogSortedPagingSource @Inject constructor(
         return try {
             val page = params.key ?: 0
             val loadSize = params.loadSize
-            val response = theDogApi.getDogsSorted(apiKey, loadSize.toString(), page.toString(), "true", "ASC")
+            val response = theDogApi.searchDogs(apiKey, query!!)
 
             if (response.isEmpty()) {
                 LoadResult.Error(ApiEmptyResponseException("No dogs found"))
             } else {
+                val searchResult = mutableListOf<DogDataModel>()
                 val hasMoreItems = response.size == loadSize
                 val nextPage = if (hasMoreItems) {
                     page + 1
@@ -34,10 +36,13 @@ class DogSortedPagingSource @Inject constructor(
                     null
                 }
 
-                Log.d("Elias", "loadSize: $loadSize, page: $page, responseSize: ${response.size}")
+                response.forEach {breed ->
+                    val dogData = theDogApi.getDogByImageId(breed.imageId)
+                    searchResult.add(dogData)
+                }
 
                 LoadResult.Page(
-                    data = response,
+                    data = searchResult,
                     prevKey = if (page == 0) null else page - 1,
                     nextKey = nextPage
                 )

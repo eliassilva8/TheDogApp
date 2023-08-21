@@ -1,4 +1,4 @@
-package com.example.thedogapp.presentationlayer.ui
+package com.example.thedogapp.presentationlayer.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

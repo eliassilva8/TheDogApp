@@ -1,4 +1,4 @@
-package com.example.thedogapp.presentationlayer.ui
+package com.example.thedogapp.presentationlayer.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

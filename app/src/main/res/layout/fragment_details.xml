@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".presentationlayer.ui.DetailsFragment">
+    tools:context=".presentationlayer.fragments.DetailsFragment">
 
     <ImageView
         android:id="@+id/dogImage"
@@ -65,7 +65,7 @@
         app:layout_constraintStart_toEndOf="@id/breedGroupLabel"
         app:layout_constraintTop_toTopOf="@id/breedGroupLabel"
         app:layout_constraintBottom_toBottomOf="@id/breedGroupLabel"
-        tools:text="Group"/>"
+        tools:text="Group"/>
 
     <TextView
         android:id="@+id/originLabel"
@@ -78,7 +78,7 @@
         app:layout_constraintStart_toStartOf="@id/breedNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/breedGroupLabel"
         android:text="@string/origin"
-        tools:text="Origin"/>"
+        tools:text="Origin"/>
 
     <TextView
         android:id="@+id/origin"
@@ -91,7 +91,7 @@
         app:layout_constraintStart_toEndOf="@id/originLabel"
         app:layout_constraintTop_toTopOf="@id/originLabel"
         app:layout_constraintBottom_toBottomOf="@id/originLabel"
-        tools:text="Origin"/>"
+        tools:text="Origin"/>
 
     <TextView
         android:id="@+id/temperamentLabel"
@@ -104,7 +104,7 @@
         app:layout_constraintStart_toStartOf="@id/breedNameLabel"
         app:layout_constraintTop_toBottomOf="@+id/originLabel"
         android:text="@string/temperament"
-        tools:text="Temperament"/>"
+        tools:text="Temperament"/>
 
     <TextView
         android:id="@+id/temperament"
@@ -117,5 +117,5 @@
         app:layout_constraintEnd_toEndOf="@id/breedName"
         app:layout_constraintStart_toEndOf="@id/temperamentLabel"
         app:layout_constraintTop_toTopOf="@id/temperamentLabel"
-        tools:text="Temperament"/>"
+        tools:text="Temperament"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

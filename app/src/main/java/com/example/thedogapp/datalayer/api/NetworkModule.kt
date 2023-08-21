@@ -1,4 +1,4 @@
-package com.example.thedogapp.datalayer
+package com.example.thedogapp.datalayer.api
 
 import dagger.Module
 import dagger.Provides

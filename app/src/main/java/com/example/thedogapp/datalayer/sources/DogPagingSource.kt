@@ -1,9 +1,10 @@
-package com.example.thedogapp.datalayer
+package com.example.thedogapp.datalayer.sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.example.thedogapp.BuildConfig
-import retrofit2.awaitResponse
+import com.example.thedogapp.datalayer.models.DogDataModel
+import com.example.thedogapp.datalayer.api.TheDogApi
 import javax.inject.Inject
 
 class DogPagingSource @Inject constructor(

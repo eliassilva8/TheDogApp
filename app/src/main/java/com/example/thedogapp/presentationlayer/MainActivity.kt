@@ -1,4 +1,4 @@
-package com.example.thedogapp.presentationlayer.ui
+package com.example.thedogapp.presentationlayer
 
 import android.os.Bundle
 import android.view.View

@@ -1,7 +1,7 @@
-package com.example.thedogapp.datalayer
+package com.example.thedogapp.datalayer.api
 
-import kotlinx.coroutines.flow.Flow
-import retrofit2.Call
+import com.example.thedogapp.datalayer.models.Breed
+import com.example.thedogapp.datalayer.models.DogDataModel
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Path

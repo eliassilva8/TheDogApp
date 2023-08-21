@@ -1,4 +1,4 @@
-package com.example.thedogapp.presentationlayer.ui
+package com.example.thedogapp.presentationlayer.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,9 +12,12 @@ import coil.load
 import coil.transform.RoundedCornersTransformation
 import com.example.thedogapp.R.id
 import com.example.thedogapp.R.layout
+import com.example.thedogapp.presentationlayer.models.DogUiModel
 
 
-class DogListAdapter(private val itemClickListener: ItemClickListener) : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHolder>(DOG_DIFF_CALLBACK) {
+class DogListAdapter(private val itemClickListener: ItemClickListener) : PagingDataAdapter<DogUiModel, DogListAdapter.DogViewHolder>(
+    DOG_DIFF_CALLBACK
+) {
     private var isListView: Boolean = true
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogViewHolder {

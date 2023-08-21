@@ -1,4 +1,4 @@
-package com.example.thedogapp.presentationlayer.ui
+package com.example.thedogapp.presentationlayer.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -16,6 +16,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.thedogapp.R
 import com.example.thedogapp.databinding.FragmentHomeBinding
+import com.example.thedogapp.presentationlayer.adapters.DogListAdapter
+import com.example.thedogapp.presentationlayer.adapters.ItemClickListener
+import com.example.thedogapp.presentationlayer.models.DogUiModel
 import com.example.thedogapp.presentationlayer.viewmodels.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

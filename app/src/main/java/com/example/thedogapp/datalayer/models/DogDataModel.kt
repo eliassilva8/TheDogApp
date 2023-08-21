@@ -1,6 +1,6 @@
-package com.example.thedogapp.datalayer
+package com.example.thedogapp.datalayer.models
 
-import com.example.thedogapp.presentationlayer.ui.DogUiModel
+import com.example.thedogapp.presentationlayer.models.DogUiModel
 import com.google.gson.annotations.SerializedName
 
 data class DogDataModel(

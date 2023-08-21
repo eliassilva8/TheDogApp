@@ -7,9 +7,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
-import com.example.thedogapp.datalayer.TheDogApiRepository
-import com.example.thedogapp.datalayer.toDogUiModel
-import com.example.thedogapp.presentationlayer.ui.DogUiModel
+import com.example.thedogapp.datalayer.repositories.TheDogApiRepository
+import com.example.thedogapp.datalayer.models.toDogUiModel
+import com.example.thedogapp.presentationlayer.models.DogUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

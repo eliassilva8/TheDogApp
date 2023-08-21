@@ -16,7 +16,7 @@
         android:name=".TheDogAppApplication"
         tools:targetApi="31">
         <activity
-            android:name=".presentationlayer.ui.MainActivity"
+            android:name=".presentationlayer.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
